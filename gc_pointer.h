@@ -157,11 +157,27 @@ T *Pointer<T, size>::operator=(T *t){
 }
 // Overload assignment of Pointer to Pointer.
 template <class T, int size>
-Pointer<T, size> &Pointer<T, size>::operator=(Pointer &rv){
+Pointer<T, size> &Pointer<T, size>::operator=(Pointer &rv)
+{
 
     // TODO: Implement operator==
     // LAB: Smart Pointer Project Lab
+    typename std::list<PtrDetails<T>>::iterator p;
+    // TODO: Implement assignment
+    // First, decrement the reference count
+    // for the memory currently being pointed to.
+    p = findPtrInfo(addr);
+    p->refcount--;
+    // Then, increment the reference count of
+    // the new address.
+    p = findPtrInfo(rv.addr);
 
+    // increment ref count
+    p->refcount++;
+    // store the address.
+    addr = rv.addr;
+    // return
+    return rv;
 }
 
 // A utility function that displays refContainer.
