@@ -112,6 +112,24 @@ Pointer<T, size>::Pointer(T *t)
     if (first)
         atexit(shutdown);
     first = false;
+
+    typename std::list<PtrDetails<T>>::iterator p;
+    p = findPtrInfo(addr);
+    p->refcount--;
+
+    p = findPtrInfo(t);
+    if (p != refContainer.end())
+    {
+        p->refcount++;
+    }
+    else
+    {
+        PtrDetails<T> ptr(t, size);
+        refContainer.emplace_back(ptr);
+    }
+    addr = t;
+    arraySize = size;
+    isArray = (size > 0);
 }
 // Copy constructor.
 template <class T, int size>
