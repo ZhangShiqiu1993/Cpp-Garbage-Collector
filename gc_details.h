@@ -20,17 +20,10 @@ array, then arraySize contains its size */
 
     PtrDetails(T *ptr, int size = 0)
     {
+        refcount = 1;
         memPtr(ptr);
-        if (size > 0)
-        {
-            isArray = true;
-            arraySize = size;
-        }
-        else
-        {
-            isArray = false;
-            arraySize = 0;
-        }
+        isArray = (size > 0);
+        arraySize = size;
     }
 };
 // Overloading operator== allows two class objects to be compared.
