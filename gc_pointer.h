@@ -191,7 +191,19 @@ bool Pointer<T, size>::collect()
 template <class T, int size>
 T *Pointer<T, size>::operator=(T *t)
 {
+    typename std::list<PtrDetails<T>>::iterator p;
+    p = findPtrInfo(addr);
+    p->refcount--;
 
+    p = findPtrInfo(t);
+    if (p != refContainer.end()) {
+        p->refcount++;
+    } else {
+        PtrDetails<T> ptr(t, size);
+        refContainer.emplace_back(ptr);
+    }
+    addr = t;
+    return addr;
 }
 // Overload assignment of Pointer to Pointer.
 template <class T, int size>
